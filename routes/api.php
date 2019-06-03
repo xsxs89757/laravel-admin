@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('refresh.admin.token')->group(function($router) {
+    /*登录后公共拥有权限部分*/
+    $router->get('/','IndexController@show');
 });

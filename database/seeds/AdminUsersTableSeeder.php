@@ -14,12 +14,24 @@ class AdminUsersTableSeeder extends Seeder
         DB::table('admin_users')->insert([
             'username' => 'admin',
             'password' => bcrypt('123456'),
-            'phone'=>'13793303009',
+            //'phone'=>'13793303009',
             'create_time'=>time(),
             'last_login_time'=>time(),
             'last_login_ip'=>'127.0.0.1',
-            'facephoto'=>'',
-            'nickname'=>'王磊'
+            'introduction'=>'', //预留
+            'facephoto'=>'facephoto/default.gif',
+            'nickname'=>'超级管理员'
+        ]);
+        DB::table('admin_users')->insert([
+            'username' => 'wanglei',
+            'password' => bcrypt('123456'),
+            //'phone'=>'13793303008',
+            'create_time'=>time(),
+            'last_login_time'=>time(),
+            'last_login_ip'=>'127.0.0.1',
+            'introduction'=>'',//预留
+            'facephoto'=>'facephoto/default.gif',
+            'nickname'=>'测试1'
         ]);
     }
 }
