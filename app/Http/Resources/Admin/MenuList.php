@@ -17,6 +17,7 @@ class MenuList extends Resource
         $children = $this->children;
         return [
             'id'=>$this->id,
+            'key'=>$this->key,
             'name'=>$this->name,
             'introduction'=>$this->introduction,
             'redirect'=>$this->redirect,
@@ -27,10 +28,12 @@ class MenuList extends Resource
             'external_link'=>$this->external_link,
             'affix'=>$this->affix === 1?true:false,
             'icon'=>$this->icon,
-            'breadcrumb'=>$this->breadcrumb === 1?false:true,
+            'breadcrumb'=>$this->breadcrumb === 1?true:false,
             'params'=>$this->params,
             'sort'=>$this->sort,
             'pid'=>$this->pid,
+            'oldKey'=>$this->key,
+            'parentKey'=>$this->when($this->pid===0,'',str_before($this->key,'.'.$this->name)),
             'children'=>$this->when(count($children) !== 0,static::collection(collect($children)))
 
         ];

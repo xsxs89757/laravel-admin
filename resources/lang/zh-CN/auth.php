@@ -20,5 +20,9 @@ return [
     'authError'             => '权限错误',
     'statusError'           => '用户被禁用',
     'exceptionLogin'        => '异常登录',
-    'usernameUnique'        => '用户名已经存在'
+    'usernameUnique'        => '用户名已经存在',
+    'menuUnique'            => '菜单重复',
+    'oldPasswordError'      => '原始密码不正确',
+    'configUnique'          => '配置别名重复',
+    'dictionaryUnique'      => '字典名称重复'
 ];

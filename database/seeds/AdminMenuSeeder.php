@@ -15,16 +15,31 @@ class AdminMenuSeeder extends Seeder
      */
     public function run()
     {
-        $adminMenu = AdminMenu::create(['name'=>'system','key'=>'system','introduction'=>'系统设置','redirect'=>'config','hidden'=>0,'breadcrumb'=>0,
+        $adminSystem = AdminMenu::create(['name'=>'system','key'=>'system','introduction'=>'系统设置','redirect'=>'config','hidden'=>0,'breadcrumb'=>0,
         					'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
         					'icon'=>'setting','pid'=>0,'params'=>'','sort'=>99]);
 
-        AdminMenu::create(['name'=>'config','key'=>'system.config','introduction'=>'参数设置','redirect'=>'','hidden'=>0,'breadcrumb'=>0,
+        $adminConfig = AdminMenu::create(['name'=>'config','key'=>'system.config','introduction'=>'系统设置','redirect'=>'','hidden'=>0,'breadcrumb'=>0,
         					'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
-        					'icon'=>'','pid'=>$adminMenu->id,'params'=>'','sort'=>1]);
-        AdminMenu::create(['name'=>'list','key'=>'system.list','introduction'=>'配置管理','redirect'=>'','hidden'=>0,'breadcrumb'=>0,
+        					'icon'=>'','pid'=>$adminSystem->id,'params'=>'','sort'=>1]);
+        AdminMenu::create(['name'=>'save','key'=>'system.config.save','introduction'=>'保存','redirect'=>'','hidden'=>1,'breadcrumb'=>0,
+                            'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminConfig->id,'params'=>'','sort'=>1]);
+        $adminSystemList = AdminMenu::create(['name'=>'list','key'=>'system.list','introduction'=>'配置管理','redirect'=>'','hidden'=>0,'breadcrumb'=>0,
         					'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
-        					'icon'=>'','pid'=>$adminMenu->id,'params'=>'','sort'=>2]);
+        					'icon'=>'','pid'=>$adminSystem->id,'params'=>'','sort'=>2]);
+        AdminMenu::create(['name'=>'add','key'=>'system.list.add','introduction'=>'添加','redirect'=>'','hidden'=>1,'breadcrumb'=>0,
+                            'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminSystemList->id,'params'=>'','sort'=>1]);
+        AdminMenu::create(['name'=>'edit','key'=>'system.list.edit','introduction'=>'编辑','redirect'=>'','hidden'=>1,
+                            'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminSystemList->id,'params'=>'','sort'=>1]);
+        AdminMenu::create(['name'=>'delete','key'=>'system.list.delete','introduction'=>'删除','redirect'=>'','hidden'=>1,
+                            'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminSystemList->id,'params'=>'','sort'=>1]);
+        AdminMenu::create(['name'=>'sort','key'=>'system.list.sort','introduction'=>'排序','redirect'=>'','hidden'=>1,
+                            'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminSystemList->id,'params'=>'','sort'=>1]);
 
         $adminMenu = AdminMenu::create(['name'=>'menu','key'=>'menu','introduction'=>'菜单管理','redirect'=>'index','hidden'=>0,'breadcrumb'=>0,
         					'always_show'=>0,'no_cache'=>1,'is_external_link'=>0,'affix'=>0,
@@ -36,6 +51,9 @@ class AdminMenuSeeder extends Seeder
                             'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
                             'icon'=>'','pid'=>$adminMenu->id,'params'=>'','sort'=>1]);
         AdminMenu::create(['name'=>'deleteMenu','key'=>'menu.deleteMenu','introduction'=>'删除','redirect'=>'','hidden'=>1,
+                            'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminMenu->id,'params'=>'','sort'=>1]);
+        AdminMenu::create(['name'=>'sortMenu','key'=>'menu.sortMenu','introduction'=>'排序','redirect'=>'','hidden'=>1,
                             'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
                             'icon'=>'','pid'=>$adminMenu->id,'params'=>'','sort'=>1]);
 
@@ -75,9 +93,21 @@ class AdminMenuSeeder extends Seeder
                             ,'hidden'=>1,'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
                             'icon'=>'','pid'=>$adminUsersLogs->id,'params'=>'','sort'=>1]);
 
-        AdminMenu::create(['name'=>'baidu','key'=>'baidu','introduction'=>'百度','redirect'=>'index','hidden'=>0,'breadcrumb'=>0,'always_show'=>0,
-                            'no_cache'=>0,'is_external_link'=>1,'external_link'=>'http://www.baidu.com','affix'=>0,
-                            'icon'=>'link','pid'=>0,'params'=>'','sort'=>99]);
+        $adminDictionary = AdminMenu::create(['name'=>'dictionary','key'=>'system.dictionary','introduction'=>'字典管理','redirect'=>'','hidden'=>0,
+                            'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminSystem->id,'params'=>'','sort'=>2]);
+        AdminMenu::create(['name'=>'add','key'=>'system.dictionary.add','introduction'=>'添加字典','redirect'=>'','hidden'=>1,'breadcrumb'=>0,
+                            'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminDictionary->id,'params'=>'','sort'=>1]);
+        AdminMenu::create(['name'=>'edit','key'=>'system.dictionary.edit','introduction'=>'编辑字典','redirect'=>'','hidden'=>1,
+                            'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminDictionary->id,'params'=>'','sort'=>1]);
+        AdminMenu::create(['name'=>'save','key'=>'system.dictionary.save','introduction'=>'保存字典','redirect'=>'','hidden'=>1,
+                            'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminDictionary->id,'params'=>'','sort'=>1]);
+        AdminMenu::create(['name'=>'delete','key'=>'system.dictionary.delete','introduction'=>'删除字典','redirect'=>'','hidden'=>1,
+                            'breadcrumb'=>0,'always_show'=>0,'no_cache'=>0,'is_external_link'=>0,'affix'=>0,
+                            'icon'=>'','pid'=>$adminDictionary->id,'params'=>'','sort'=>1]);
 
     }
 }

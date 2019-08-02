@@ -32,8 +32,8 @@ class AdminActionLog
             $admin_action_log->path_name = \Route::currentRouteName();
             $admin_action_log->ip = $request->getClientIp();
             $admin_action_log->method = $method;
-            $admin_action_log->action_uid = $user->id;
-            $admin_action_log->action_user = serialize(['userid'=>$user->id,'username'=>$user->username,'nickname'=>$user->nickname]);
+            $admin_action_log->action_uid = $user?$user->id:0;
+            $admin_action_log->action_user = $user?serialize(['userid'=>$user->id,'username'=>$user->username,'nickname'=>$user->nickname]):'';
             if($data['code'] == 20000){
                 $admin_action_log->status = 1;
             }else{

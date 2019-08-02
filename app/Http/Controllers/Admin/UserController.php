@@ -12,6 +12,7 @@ use App\Models\AdminUsers;
 use App\Models\AdminMenu;
 use App\Models\Roles;
 use App\Models\AdminActionLog;
+use Spatie\Permission\Models\Permission;
 
 
 class UserController extends Controller
@@ -187,6 +188,56 @@ class UserController extends Controller
     }
 
     /**
+     * 修改密码
+     * @Author   lei.wang
+     * @DateTime 2019-06-14T16:17:08+0800
+     * @param    Request                  $request
+     * @return   Json
+     */
+    protected function resetPassword(Request $request)
+    {
+        $rules = [
+            'oldPassword' => 'required|min:6',
+            'password' => 'required|min:6|confirmed'
+        ];
+        $this->validate($request, $rules);
+        $input = $request->input();
+        $user = Auth::user();
+        if (\Hash::check($request->get('oldPassword'),$user->password)){
+            $user->password = bcrypt($request->input('password'));
+            $user->save();
+            return responseJson([]);
+        }else{
+            throw new \App\Exceptions\Admin\CustomException(21009);
+        }
+    }
+    /**
+     * 开发模式
+     * @Author   lei.wang
+     * @DateTime 2019-06-14T16:17:50+0800
+     * @param    Request                  $request
+     * @return   Json                     
+     */
+    protected function dev(Request $request)
+    {
+        $dev = $request->input('dev');
+        if($dev === "1"){
+            AdminMenu::whereIn('id',[4,9])->update(['hidden'=>0]); //隐藏菜单
+            Permission::whereIn('name',['system.list','system.list.add','system.list.edit','system.list.delete','system.list.sort',
+            'menu','menu.addMenu','menu.editMenu','menu.deleteMenu','menu.sortMenu'])
+            ->update(['guard_name'=>'admin']); //放入闲置门面
+        }else{
+            AdminMenu::whereIn('id',[4,9])->update(['hidden'=>1]); //隐藏菜单
+            Permission::whereIn('name',['system.list','system.list.add','system.list.edit','system.list.delete','system.list.sort',
+            'menu','menu.addMenu','menu.editMenu','menu.deleteMenu','menu.sortMenu'])
+            ->update(['guard_name'=>'leave']); //放入闲置门面
+        }
+        AdminMenu::refreshCachePermissionRoleMenu(); //更新权限
+        return responseJson([]);
+    }
+
+
+    /**
      * [测试方法]
      * @Author   lei.wamng
      * @DateTime 2019-05-05T16:50:48+0800
@@ -203,7 +254,15 @@ class UserController extends Controller
      * @DateTime 2019-05-05T16:50:48+0800
      * @return   [json]
      */
-    protected function show2(){
-        
+    protected function show2(Request $request){
+        $input = $request->input();
+        if($input){
+            $tmp = [];
+            foreach ($input as $key => $value) {
+                $tmp[] =  $value;
+            }
+            return AdminMenu::updateBatch('admin_menu',$tmp);
+            return $tmp;
+        }
     }
 }

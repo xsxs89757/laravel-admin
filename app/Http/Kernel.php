@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'refresh.admin.token' => \App\Http\Middleware\RefreshAdminToken::class,
         'language' => \App\Http\Middleware\Language::class,
         'auth.permission' => \App\Http\Middleware\CheckPermission::class,
+        'auth.upload'=> \App\Http\Middleware\AuthUpload::class,
         'admin.action.log' => \App\Http\Middleware\AdminActionLog::class
     ];
 }

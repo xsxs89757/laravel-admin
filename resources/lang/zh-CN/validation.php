@@ -173,6 +173,7 @@ return [
         'time'                  => '时间',
         'available'             => '可用的',
         'size'                  => '大小',
-        'roles'                 => '权限'
+        'roles'                 => '权限',
+        'extra'                 => '选项'
     ],
 ];

@@ -23,6 +23,14 @@ class Language
         }else{
             \App::setLocale(\Config::get('app.locale'));
         }
-        return $next($request);
+        $response = $next($request);
+        /*
+        //设置OPTIONS
+        $method = $request->method();
+        if($method === 'OPTIONS'){
+           $response->header('X-Header-One', 'Header Value')
+        }
+        */
+        return $response;
     }
 }

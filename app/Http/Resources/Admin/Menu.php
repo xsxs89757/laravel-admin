@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\Resource;
 
 class Menu extends Resource
 {
+
     /**
      * Transform the resource into an array.
      *

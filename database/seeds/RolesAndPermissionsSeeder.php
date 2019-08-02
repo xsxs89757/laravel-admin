@@ -22,11 +22,17 @@ class RolesAndPermissionsSeeder extends Seeder
        //初始化权限
        Permission::create(['name' => 'system']);
        Permission::create(['name' => 'system.config']);
+       Permission::create(['name' => 'system.config.save']);
        Permission::create(['name' => 'system.list']);
+       Permission::create(['name' => 'system.list.add']);
+       Permission::create(['name' => 'system.list.edit']);
+       Permission::create(['name' => 'system.list.delete']);
+       Permission::create(['name' => 'system.list.sort']);
        Permission::create(['name' => 'menu']);
        Permission::create(['name' => 'menu.addMenu']);
        Permission::create(['name' => 'menu.editMenu']);
        Permission::create(['name' => 'menu.deleteMenu']);
+       Permission::create(['name' => 'menu.sortMenu']);
        Permission::create(['name' => 'adminUsers']);
        Permission::create(['name' => 'adminUsers.role']);
        Permission::create(['name' => 'adminUsers.role.addRole']);
@@ -38,7 +44,12 @@ class RolesAndPermissionsSeeder extends Seeder
        Permission::create(['name' => 'adminUsers.list.deleteAdminUser']);
        Permission::create(['name' => 'adminControllerLogs']);
        Permission::create(['name' => 'adminControllerLogs.clearAdminLogs']);
-       Permission::create(['name' => 'baidu']);
+       Permission::create(['name' => 'system.dictionary']);
+       Permission::create(['name' => 'system.dictionary.add']);
+       Permission::create(['name' => 'system.dictionary.edit']);
+       Permission::create(['name' => 'system.dictionary.save']);
+       Permission::create(['name' => 'system.dictionary.delete']);
+       
        // 创建角色并分配创建的权限
 
        $role = Role::create(['name' => 'super-admin','create_uid' => 1]);

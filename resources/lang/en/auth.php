@@ -21,5 +21,9 @@ return [
     'authError'             => 'Auth Error',
     'statusError'           => 'User Disabled',
     'exceptionLogin'        => 'ExceptionLogin',
-    'usernameUnique'        => 'UserName is Unique'
+    'usernameUnique'        => 'UserName Is Unique',
+    'menuUnique'            => 'Menu Is Unique',
+    'oldPasswordError'      => 'The original password is incorrect',
+    'configUnique'          => 'Config Name Is Unique',
+    'dictionaryUnique'      => 'Dictionary Name Is Unique'
 ];

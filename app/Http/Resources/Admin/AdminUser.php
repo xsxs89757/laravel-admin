@@ -8,6 +8,8 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\Config;
+
 class AdminUser extends Resource
 {
     /**
@@ -23,6 +25,8 @@ class AdminUser extends Resource
             'introduction' => $this->introduction,
             'avatar' => Storage::url($this->facephoto),
             'name' => $this->nickname,
+            'is_admin' => $this->when($this->id === 1,1),
+            'config' => Config::getStoreConfig()
         ];
     }
 }

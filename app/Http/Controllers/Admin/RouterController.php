@@ -23,9 +23,10 @@ class RouterController extends Controller
      * 获取登录用户router列表
      */
     
-    protected function list()
+    protected function list(Request $request)
     {
-    	$menu = AdminMenu::getRoleMenu();
+        $setting = $request->input('setting');
+    	$menu = AdminMenu::getRoleMenu($setting==="1"?true:false);
     	$menu = MenuResources::collection(collect($menu));
     	$menu = $menu->resource->toArray();
     	$menuAll = AdminMenu::getAllMenu();

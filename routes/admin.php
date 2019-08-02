@@ -16,22 +16,27 @@ Route::get('/', 'IndexController@show')->name('show');
 
 
 //login
-Route::post('/login', 'AuthController@login')->name('login');
+Route::middleware('admin.action.log')->post('/login', 'AuthController@login')->name('login');
 Route::post('/login/logout', 'AuthController@logout')->name('logout');
 
-Route::middleware('auth.permission')->group(function($router) {
-    $router->get('/user/show','UserController@show')->name('test');
-    $router->get('/user/show2','UserController@show2')->name('test');  
-});
 
-Route::middleware('refresh.admin.token')->group(function($router) {
+Route::get('/user/show','UserController@show')->name('test');
+Route::put('/user/show2','UserController@show2')->name('test');  
+
+
+Route::middleware(['refresh.admin.token','admin.action.log'])->group(function($router) {
     /*登录后公共拥有权限部分*/
     $router->get('/user/info','UserController@info')->name('userInfo');
     $router->get('/routers','RouterController@list')->name('routeList');
+    $router->post('/user/resetPassword','UserController@resetPassword')->name('resetPassword');
     /*公共上传部分*/
-    $router->post('/upload/signleImage','UploadController@signleImage')->name('upload.signleImage');
 
-    Route::middleware(['auth.permission','admin.action.log'])->group(function($router) {
+    $router->post('/upload/signleImage','UploadController@signleImage')->name('upload.signleImage');
+    $router->post('/upload/upConfig','UploadController@upConfig')->name('upload.upConfig');
+
+    /*开发模式*/
+    $router->get('/user/dev','UserController@dev')->name('dev');
+    Route::middleware('auth.permission')->group(function($router) {
         /**
          * 下面的根据name路由来区分是否有权限
          */
@@ -55,6 +60,27 @@ Route::middleware('refresh.admin.token')->group(function($router) {
         $router->post('/menu','MenuController@add')->name('menu.addMenu');
         $router->put('/menu','MenuController@edit')->name('menu.editMenu');
         $router->delete('/menu/{id}','MenuController@delete')->name('menu.deleteMenu')->where('id', '[0-9]+');
+        $router->put('/menu/sort','MenuController@sort')->name('menu.sortMenu');
+
+        //config
+        $router->get('/systemMapsOptions','SystemController@mapsOptions')->name('system.list');
+        $router->get('/systemMapsGroup','SystemController@mapsGroup')->name('system.config');
+        $router->get('/systemGroup','SystemController@group')->name('system.config');
+        $router->get('/systemConfig','SystemController@config')->name('system.config');
+        $router->put('/systemBatch','SystemController@batch')->name('system.config.save');
+        $router->get('/system','SystemController@list')->name('system.list');
+        $router->post('/system','SystemController@add')->name('system.list.add');
+        $router->put('/system','SystemController@edit')->name('system.list.edit');
+        $router->delete('/system/{id}','SystemController@delete')->name('system.list.delete')->where('id', '[0-9]+');
+        $router->put('/system/sort','SystemController@sort')->name('system.list.sort');
+
+        //dictionary 字典
+        $router->get('/dictionary','DictionaryController@list')->name('system.dictionary');
+        $router->get('/dictionary/{name}','DictionaryController@detail')->name('system.dictionary');
+        $router->delete('/dictionary/{id}','DictionaryController@delete')->name('system.dictionary.delete')->where('id', '[0-9]+');
+        $router->post('/dictionary/add','DictionaryController@add')->name('system.dictionary.add');
+        $router->put('/dictionary/edit','DictionaryController@edit')->name('system.dictionary.edit');
+        $router->put('/dictionary/save','DictionaryController@save')->name('system.dictionary.save');
 
 	});
 
