@@ -84,7 +84,7 @@ class Config extends BaseModel
             }
             return $config;
         });
-        return $name?$config['name']:$config;
+        return $name?$config[$name]:$config;
     }
 
     /**
@@ -110,6 +110,6 @@ class Config extends BaseModel
             }
             return $config;
         });
-        return $name?$config['name']:$config;
+        return $name?$config[$name]:$config;
     }
 }

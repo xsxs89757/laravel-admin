@@ -2,7 +2,8 @@
 	1.git init 
 	2.git add -A 
 	3.git commit -m "first commit"
-	4.git remote add origin git@github.com:xsxs89757/laravel-admin.git
+	4.git remote add origin git@github.com:xsxs89757/laravel-admin.git 
+	// 报错fatal:remote origin already exists 执行 git remote rm origin
 	5.git clone git://github.com/schacon/grit.git mygrit //克隆仓库
 
 ## 二 .evn

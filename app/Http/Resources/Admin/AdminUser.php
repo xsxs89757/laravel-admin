@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Config;
+use App\Models\Dictionary;
 
 class AdminUser extends Resource
 {
@@ -26,7 +27,8 @@ class AdminUser extends Resource
             'avatar' => Storage::url($this->facephoto),
             'name' => $this->nickname,
             'is_admin' => $this->when($this->id === 1,1),
-            'config' => Config::getStoreConfig()
+            'config' => Config::getStoreConfig(),
+            'dictionary' =>Dictionary::getDictionary()
         ];
     }
 }
