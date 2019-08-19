@@ -3,9 +3,11 @@
 namespace App\Exceptions\Admin;
 
 use Exception;
+use App\Helpers\Admin\AdminApiResponse;
 
 class CustomException extends Exception
 {
+    use AdminApiResponse;
     /**
      * 将异常渲染至 HTTP 响应值中。
      *
@@ -15,7 +17,8 @@ class CustomException extends Exception
     public function render($request)
     {
         $error = static::setError();
-        return responseJson([],$error[$this->getMessage()],$this->getMessage());
+        return $this->failed($error[$this->getMessage()],$this->getMessage());
+        //return responseJson([],$error[$this->getMessage()],$this->getMessage());
     }
 
     protected static function setError(){

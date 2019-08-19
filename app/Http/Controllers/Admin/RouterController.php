@@ -16,7 +16,7 @@ use App\Models\Roles;
 use App\Http\Resources\Admin\Permission  as PermissionResources;
 use App\Http\Resources\Admin\Menu as MenuResources;
 
-class RouterController extends Controller
+class RouterController extends AdminApiController
 {
     
     /** 
@@ -34,6 +34,6 @@ class RouterController extends Controller
     		'menu'=>$menu,
     		'permission'=>Roles::getUsersPermissions()
     	];
-    	return responseJson($return);
+    	return $this->success($return);
     }
 }

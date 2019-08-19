@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Resources\Admin\Roles as RolesResources;
 
-class RolesController extends Controller
+class RolesController extends AdminApiController
 {
     /**
      * 获取角色权限列表
@@ -25,7 +25,7 @@ class RolesController extends Controller
             $query->where('name',$name);
         })->paginate($limit);
     	$list = RolesResources::collection($list);
-    	return responseJson($list->resource->toArray());
+    	return $this->success($list->resource->toArray());
     }
 
     /**
@@ -49,7 +49,7 @@ class RolesController extends Controller
         if($role){
             $detail = Roles::with(['adminUsers','permissions'])->find($role->id);
             $detail = new RolesResources($detail);
-            return responseJson($detail);
+            return $this->success($detail);
         }else{
             throw new \App\Exceptions\Admin\CustomException(21002);
         }
@@ -75,7 +75,7 @@ class RolesController extends Controller
         $permissions = array_map('urlHaddleKey',$permissions);
         $role = Roles::saveById($attributes,$permissions);
         if($role){
-            return responseJson(['message'=>trans('form.editSuccess')]);
+            return $this->message(trans('form.editSuccess'));
         }else{
             throw new \App\Exceptions\Admin\CustomException(21003);
         }
@@ -97,6 +97,6 @@ class RolesController extends Controller
                 throw new \App\Exceptions\Admin\CustomException(21004);
             }
         }
-        return responseJson([]);
+        return $this->message('');
     }
 }

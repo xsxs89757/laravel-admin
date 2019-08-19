@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AdminMenu;
 use App\Http\Resources\Admin\MenuList as MenuListResources;
 
-class MenuController extends Controller
+class MenuController extends AdminApiController
 {
     /**
      * 获取按钮树形列表
@@ -23,7 +23,7 @@ class MenuController extends Controller
             'menu'=>$menu,
             'channel'=>$channel
         ];
-    	return responseJson($return);
+    	return $this->success($return);
     }
 
     /**
@@ -62,7 +62,7 @@ class MenuController extends Controller
         ];
         $menu = AdminMenu::createAndPermission($attributes);
         if($menu){
-            return responseJson(['message'=>trans('form.addSuccess')]);
+            return $this->message(trans('form.addSuccess'));
         }else{
             throw new \App\Exceptions\Admin\CustomException(21002);
         }
@@ -108,7 +108,7 @@ class MenuController extends Controller
         ];
         $menu = AdminMenu::saveById($attributes);
         if($menu){
-            return responseJson(['message'=>trans('form.editSuccess')]);
+            return $this->message(trans('form.editSuccess'));
         }else{
             throw new \App\Exceptions\Admin\CustomException(21003);
         }
@@ -120,7 +120,7 @@ class MenuController extends Controller
     protected function delete($id)
     {
         AdminMenu::deleteAndPermission($id);
-        return responseJson([]);
+        return $this->message('');
     }
 
     protected function sort(Request $request)
@@ -133,7 +133,7 @@ class MenuController extends Controller
             }
             $updateCount = AdminMenu::updateBatch('admin_menu',$tmp);
             AdminMenu::refreshCachePermissionRoleMenu();
-            return responseJson(['update_count'=>$updateCount]);
+            return $this->success(['update_count'=>$updateCount]);
         }
         
     }

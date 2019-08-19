@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Dictionary;
 
-class DictionaryController extends Controller
+class DictionaryController extends AdminApiController
 {
 	/**
 	 * 字典列表
@@ -18,7 +18,7 @@ class DictionaryController extends Controller
 	protected function list()
 	{
 		$list = Dictionary::select('id','name','title')->orderBy('created_at','desc')->get();
-		return responseJson($list);
+		return $this->success($list);
 	}
 	/**
 	 * 字典详情
@@ -31,7 +31,7 @@ class DictionaryController extends Controller
 	{
 		$value = Dictionary::where('name', $name)->value('value');
 		$value = $value?unserialize($value):[];
-		return responseJson($value);
+		return $this->success($value);
 	}
 
 	/**
@@ -51,7 +51,7 @@ class DictionaryController extends Controller
     	$attributes = ['name'=>$request->input('name'),'title'=>$request->input('title')];
     	$dictionary = Dictionary::createById($attributes);
         if($dictionary){
-            return responseJson($dictionary);
+            return $this->success($dictionary);
         }else{
             throw new \App\Exceptions\Admin\CustomException(21002);
         }
@@ -76,7 +76,7 @@ class DictionaryController extends Controller
     	$attributes = ['id'=>$request->input('id'),'name'=>$request->input('name'),'title'=>$request->input('title')];
     	$dictionary = Dictionary::saveById($attributes);
         if($dictionary){
-            return responseJson(['message'=>trans('form.editSuccess')]);
+            return $this->message(trans('form.editSuccess'));
         }else{
             throw new \App\Exceptions\Admin\CustomException(21003);
         }
@@ -98,7 +98,7 @@ class DictionaryController extends Controller
         $this->validate($request, $rules); //验证输入
         $dictionary = Dictionary::where('name',$request->input('name'))->update(['value'=>serialize($request->input('listDetail'))]);
         if($dictionary){
-            return responseJson(['message'=>trans('form.editSuccess')]);
+            return $this->message(trans('form.editSuccess'));
         }else{
             throw new \App\Exceptions\Admin\CustomException(21003);
         }
@@ -115,7 +115,7 @@ class DictionaryController extends Controller
     protected function delete($id)
     {
     	Dictionary::destroy($id);
-        return responseJson([]);
+        return $this->message('');
     }
 
 }

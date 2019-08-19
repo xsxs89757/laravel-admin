@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
-class UploadController extends Controller
+class UploadController extends AdminApiController
 {
     public function __construct(){
         //上传权限检测  暂时定义  [update]  需要修改为上传方法与路由挂接
@@ -39,7 +39,7 @@ class UploadController extends Controller
     	$type = $request->input('type','image');
     	$store = $type.'/'.date('Ymd');
 		$path = $request->file('file')->store($store);
-		return responseJson(['real_url'=>Storage::url($path),'path'=>$path]);
+		return $this->success(['real_url'=>Storage::url($path),'path'=>$path]);
     }
 
     /**
@@ -55,7 +55,7 @@ class UploadController extends Controller
         }
         $store = 'system';
         $path = $request->file('file')->store($store);
-        return responseJson(['real_url'=>Storage::url($path),'path'=>$path]);
+        return $this->success(['real_url'=>Storage::url($path),'path'=>$path]);
 
     }
 }

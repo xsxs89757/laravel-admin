@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Transformers\UserTransformer;
 
-class AuthController extends Controller
+class AuthController extends AdminApiController
 {
     /**
      * Get a JWT token via given credentials.
@@ -41,7 +41,7 @@ class AuthController extends Controller
             $user->last_login_time = time();
             $user->save();
 
-            return responseJson(['token' => 'bearer ' . $token]);
+            return $this->success(['token' => 'bearer ' . $token]);
         }else{
             throw new \App\Exceptions\Admin\CustomException(21000);
         }
@@ -55,7 +55,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::guard('admin')->logout();
-
-        return responseJson(['message' => trans('auth.logoutSuccess')]);
+        
+        return $this->message(trans('auth.logoutSuccess'));
     }
 }

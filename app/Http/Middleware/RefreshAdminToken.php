@@ -29,13 +29,14 @@ class RefreshAdminToken extends BaseMiddleware
         $this->checkForToken($request);
        // 使用 try 包裹，以捕捉 token 过期所抛出的 TokenExpiredException  异常
         try {
+            //检测是否是后台token
+            /*
+            if($this->auth->parseToken()->getClaim('role') ！== 'admin'){
+                throw new UnauthorizedHttpException('jwt-auth', trans('auth.exceptionLogin'));
+            }*/
+            
             // 检测用户的登录状态，如果正常则通过
             if ($this->auth->parseToken()->authenticate()) {
-                //检测是否是admin
-                $app = app_id();
-                if($app !== 'admin'){
-                    throw new UnauthorizedHttpException('jwt-auth', trans('auth.exceptionLogin'));
-                }
                 return $next($request);
             }
             throw new UnauthorizedHttpException('jwt-auth', trans('auth.noLogin'));

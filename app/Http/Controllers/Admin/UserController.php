@@ -15,7 +15,7 @@ use App\Models\AdminActionLog;
 use Spatie\Permission\Models\Permission;
 
 
-class UserController extends Controller
+class UserController extends AdminApiController
 {
     /**
      * [返回登录用户信息]
@@ -27,7 +27,7 @@ class UserController extends Controller
     {
     	$user = Auth::user();
         $loginInfo = new AdminResources($user);
-    	return responseJson($loginInfo);
+    	return $this->success($loginInfo);
         
     }
     
@@ -55,7 +55,7 @@ class UserController extends Controller
         $list = AdminUsersResources::collection($list);
         $list = $list->resource->toArray();
         $list['roles_list'] = Roles::getUsersRoles();
-        return responseJson($list);
+        return $this->success($list);
     }
 
 
@@ -87,7 +87,7 @@ class UserController extends Controller
         if($adminUsers){
             $detail = AdminUsers::with(['adminUsers'])->find($adminUsers->id);
             $detail = new AdminUsersResources($detail);
-            return responseJson($detail);
+            return $this->success($detail);
         }else{
             throw new \App\Exceptions\Admin\CustomException(21002);
         }
@@ -121,7 +121,7 @@ class UserController extends Controller
         $roles = $request->input('roles');
         $adminUsers = AdminUsers::saveById($attributes,$roles);
         if($adminUsers){
-            return responseJson(['message'=>trans('form.editSuccess')]);
+            return $this->message(trans('form.editSuccess'));
         }else{
             throw new \App\Exceptions\Admin\CustomException(21003);
         }
@@ -147,7 +147,7 @@ class UserController extends Controller
                 throw new \App\Exceptions\Admin\CustomException(21004);
             }
         }
-        return responseJson([]);
+        return $this->message('');
     }
 
     /**
@@ -175,7 +175,7 @@ class UserController extends Controller
             $query->orderBy($sortName,$sort);
         })->paginate($limit);
         $list = AdminActionLogResources::collection($list);
-        return responseJson($list->resource->toArray());
+        return $this->success($list->resource->toArray());
     }
 
     /**
@@ -184,7 +184,7 @@ class UserController extends Controller
     protected function clearLogs()
     {
         AdminActionLog::truncate();
-        return responseJson([]);
+        return $this->message('');
     }
 
     /**
@@ -206,7 +206,7 @@ class UserController extends Controller
         if (\Hash::check($request->get('oldPassword'),$user->password)){
             $user->password = bcrypt($request->input('password'));
             $user->save();
-            return responseJson([]);
+            return $this->message('');
         }else{
             throw new \App\Exceptions\Admin\CustomException(21009);
         }
@@ -233,7 +233,7 @@ class UserController extends Controller
             ->update(['guard_name'=>'leave']); //放入闲置门面
         }
         AdminMenu::refreshCachePermissionRoleMenu(); //更新权限
-        return responseJson([]);
+        return $this->message('');
     }
 
 

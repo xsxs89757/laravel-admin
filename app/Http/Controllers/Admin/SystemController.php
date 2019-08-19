@@ -11,7 +11,7 @@ use DB;
 
 use App\Http\Resources\Admin\Config as ConfigResources;
 
-class SystemController extends Controller
+class SystemController extends AdminApiController
 {
 	/**
 	 * 分组配置项
@@ -41,7 +41,7 @@ class SystemController extends Controller
     			"key"=>$key
     		];
     	}
-    	return responseJson(['group'=>$mapsOptions,'type'=>$mapsOptionsType]);
+    	return $this->success(['group'=>$mapsOptions,'type'=>$mapsOptionsType]);
     }
 
     /**
@@ -64,7 +64,7 @@ class SystemController extends Controller
             }
             
         }
-        return responseJson($mapsGroup);
+        return $this->success($mapsGroup);
     }
 
     /**
@@ -94,7 +94,7 @@ class SystemController extends Controller
             });
         })->orderBy('sort','asc')->orderBy('created_at','desc')->paginate($limit);
     	$list = ConfigResources::collection($list);
-    	return responseJson($list->resource->toArray());
+    	return $this->success($list->resource->toArray());
     }
 
     /**
@@ -117,7 +117,7 @@ class SystemController extends Controller
             $query->where('group',$type);
         })->orderBy('sort','asc')->orderBy('created_at','desc')->get();
         $list = ConfigResources::collection($list);
-        return responseJson($list);
+        return $this->success($list);
     }
 
     /**
@@ -175,7 +175,7 @@ class SystemController extends Controller
     	$attributes = $this->validateRequest($request);
     	$config = Config::createById($attributes);
     	if($config){
-			return responseJson($config);
+			return $this->success($config);
     	}else{
     		throw new \App\Exceptions\Admin\CustomException(21002);
     	}
@@ -193,7 +193,7 @@ class SystemController extends Controller
     	$attributes = $this->validateRequest($request,'edit');
     	$config = Config::saveById($attributes);
     	if($config){
-            return responseJson(['message'=>trans('form.editSuccess')]);
+            return $this->message(trans('form.editSuccess'));
         }else{
             throw new \App\Exceptions\Admin\CustomException(21003);
         }
@@ -211,7 +211,7 @@ class SystemController extends Controller
         if($uid === 1){ //超管
             Config::destroy($id);
         }
-        return responseJson([]);
+        return $this->message('');
     }
     /**
      * 更新排序
@@ -230,7 +230,7 @@ class SystemController extends Controller
             }
             $updateCount = Config::updateBatch('config',$tmp);
             Config::refreshCache();
-            return responseJson(['update_count'=>$updateCount]);
+            return $this->success(['update_count'=>$updateCount]);
         }
     }
     /**
@@ -251,7 +251,7 @@ class SystemController extends Controller
         }
         $updateCount = Config::updateBatch('config',$tmp);
         Config::refreshCache();
-        return responseJson(['update_count'=>$updateCount]);
+        return $this->success(['update_count'=>$updateCount]);
     }
 
 
