@@ -273,7 +273,7 @@ class AdminMenu extends BaseModel
     {
     	$deleteRows = static::find($id);
     	$children = array_keys(static::getChildrenChain($id));
-    	array_unshift($children,$deleteRows->name);
+    	array_unshift($children,$deleteRows->key);
 		if(Permission::whereIn('name',$children)->delete()){ //删除权限
 			static::whereIn('key',$children)->delete(); //删除菜单
 			static::refreshCachePermissionRoleMenu(); //刷新权限缓存
